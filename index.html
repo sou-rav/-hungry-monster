@@ -5,45 +5,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hungry-monster</title>
-    <!-- style -->
+    <title>Hungry Monster</title>
     <link rel="stylesheet" href="style.css">
-    <!-- script -->
-    <script src="app.js" async\></script>
 
-</head>
+    <script src="app.js" async></script>
 
 <body>
-    <div class="container">
-        <div class="search">
-
-            <div class="meal-search-box">
-                <input type="text" class="search-control" placeholder="Search for meal" id="search-input">
-                <button onclick="search()" type="submit" class="search-btn btn" id="search-btn">
-                    Search
-                </button>
+    <div id="container" class="container">
+        <div class="search-bar">
+            <div class="search-box">
+                <input id="search-field" type="text" class="form-control" placeholder="Search for meal..."><button
+                    onclick="searchMeals()" class="search-btn">Search</button>
             </div>
         </div>
-
-        <div class="display">
-            <div class="meal-result">
-                <div id="meal">
-
-                </div>
+        <div id="ingredients">
+            <h2 id="mealName"></h2>
+            <img id="mealImage" />
+            <h3>Ingredients</h3>
+            <ul id="ingredientList"></ul>
+            <button id="close-button">X</button>
+        </div>
+        <div class="display-meals">
+            <div id="error-message">
+                <h3>No matching food <br> Please try another</h3>
             </div>
 
-            <div id="ingredients">
-                <img id="mealImage" />
-                <h3 id="mealName"></h3>
-                <h3>Ingredients</h3>
-                <ul id="ingredientList"></ul>
-            </div>
-
-            <div id="foodListDiv">
+            <div id="meals">
 
             </div>
+
         </div>
     </div>
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 </body>
 
 </html>

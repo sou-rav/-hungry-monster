@@ -1,38 +1,41 @@
-const search = () => {
-    const searchInput = document.getElementById('search-input').value;
-    const url = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`
+const errorMessage = document.getElementById('error-message');
+const fullBody = document.getElementById('container');
+
+// display meals
+
+const searchMeals = () => {
+    const searchText = document.getElementById('search-field').value;
+    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`;
     fetch(url)
         .then(res => res.json())
-        .then((data) => displayMeals(data));
-}
-
-
-const displayMeals = (foods) => {
-    document.getElementById("ingredients").style.display = "none";
-    const foodListDiv = document.getElementById("foodListDiv");
-    const meals = foods.meals;
-
-    if (meals === null) {
-        foodListDiv.innerHTML = "<h3>No matching food found.</h3>";
-    } else {
-        foodListDiv.innerHTML = "";
-        meals.forEach((meal) => {
-            const foodDiv = document.createElement("div");
-            const foodId = meal.idMeal;
-
-            const foodInfo = `
-            <div onclick=displayFoodDetails('${foodId}')>
-                <img src="${meal.strMealThumb}" class="food-image"/>
-                <h4>${meal.strMeal}</h4>
+        .then(data => {
+            displayMeals(data.meals);
+        })
+};
+const displayMeals = meals => {
+    const foodDisplay = document.getElementById('meals');
+    foodDisplay.innerHTML = '';
+    if (meals !== null) {
+        meals.map(meal => {
+            const mealDiv = document.createElement('div');
+            mealDiv.className = 'meals';
+            const mealInfo = `
+            <div onclick="displayFoodDetails('${meal.idMeal}')" class="meal-div">
+                <img class="meal-img" src="${meal.strMealThumb}" alt="">
+                <h4 class="meal-name">${meal.strMeal}</h4>
             </div>
-        `;
-
-            foodDiv.innerHTML = foodInfo;
-            foodListDiv.appendChild(foodDiv);
-        });
+            `
+            mealDiv.innerHTML = mealInfo;
+            foodDisplay.appendChild(mealDiv);
+            errorMessage.style.display = 'none';
+        })
+    }
+    else {
+        errorMessage.style.display = 'block';
     }
 };
 
+// display Ingredients 
 
 const displayFoodDetails = (id) => {
     const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -55,10 +58,40 @@ const displayIngredients = (food) => {
         const ingredientItem = food.meals[0][`strIngredient${i}`];
         const ingredientAmount = food.meals[0][`strMeasure${i}`];
         if (ingredientItem) {
-            const li = document.createElement("li");
+            const li = document.createElement("p");
             li.innerHTML = `${ingredientAmount} ${ingredientItem}`;
             ingredientList.appendChild(li);
             console.log(ingredientItem);
         }
     }
 };
+
+//close pop-up 
+
+fullBody.addEventListener('click', closeFunction)
+function closeFunction() {
+    ingredients.style.display = 'none'
+}
+
+//Back To Top Button
+
+const mybutton = document.getElementById("myBtn");
+window.onscroll = function () {
+    scrollFunction()
+};
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+}
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+
+
+
+
